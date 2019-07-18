@@ -1,0 +1,24 @@
+language: python
+
+python:
+    - "3.7-dev"
+
+services:
+    - postgresql
+
+env:
+    - repo_token: $REPO_TOKEN
+
+install:
+    - pip install -r requirements.txt
+
+before_script:
+    - psql -c "create database stackoverflow_db;" -U postgres
+    - python manage.py makemigrations
+    - python manage.py migrate
+
+script:
+    - coverage run --source='.' manage.py test
+
+after_success:
+    - coveralls
