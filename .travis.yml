@@ -11,6 +11,7 @@ env:
 
 install:
     - pip install -r requirements.txt
+    - pip install codecov
 
 before_script:
     - psql -c "create database stackoverflow_db;" -U postgres
@@ -19,6 +20,8 @@ before_script:
 
 script:
     - coverage run --source='.' manage.py test
+    - bash <(curl -s https://codecov.io/bash)
 
 after_success:
     - coveralls
+    - codecov
