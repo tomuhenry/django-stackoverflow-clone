@@ -1,0 +1,36 @@
+{% extends "layout.html" %}
+{% load widget_tweaks %}
+{% load question_extras %}
+
+{% block title %} {{ question.title }} {% endblock title %}
+
+{% block content %}
+
+<div>
+        {{ block.super }}
+        <br>
+        <article>
+            <h2 class="text-info">{{ question.title }}</h2>
+
+            <div class="callout secondary">
+                {{ question.body|markdown_to_html }}
+            </div>
+        </article>
+        <ul class="nav nav-tabs" >
+
+          {% if user.is_authenticated %}
+          <hr>
+          <li class="nav-item">
+              <a class="nav-link active bg-info text-white" href="{% url 'questions:create_question' %}">Ask a Question</a>
+            </li>
+          {% endif %}
+          {% if user == question.author %}
+            <li class="nav-item">
+              <a class="nav-link active bg-info text-white" href="{% url 'questions:edit_question' pk=question.pk %}">Edit Question</a>
+            </li>
+        {% endif %}
+
+        </ul>
+    </div>
+  
+{% endblock content %}

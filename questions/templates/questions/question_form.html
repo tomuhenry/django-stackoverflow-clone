@@ -1,0 +1,52 @@
+{% extends "layout.html" %}
+{% load widget_tweaks %}
+
+{% block title %}
+    {{ form.instance.title | default:"New Question"}} | {{ question.title }} {{ block.super }}
+{% endblock title %}
+
+{% block content %}
+<!-- {% if perms.app_label.can_do_something %} -->
+
+<!-- {% endif %} -->
+<div class="col-sm-9 col-md-7 col-lg-9 mx-auto">
+    {{ block.super }}
+  <div class="card card-signin my-5 border-info flex-row">
+    <div class="card-body">
+      <h2 class="card-title text-center text-info">
+          {{ form.instance.title | default:"Make a new question"}}</h2>
+
+      {% if user.is_authenticated %}
+      <form method="post" validate>
+        {% csrf_token %} 
+        {% for field in form %}
+        <div class="form-group">
+          <span class="helptext text-danger"> {{ field.errors }} </span>
+          {{ field.label_tag }}
+          {% render_field field class="form-control"%}
+        {% endfor %}
+        </div>
+        <button
+        type="submit"
+        class="btn btn-outline-info text-uppercase font-weight-bold"
+        method="POST"
+        >
+         Save
+        </button>
+        {% if form.instance.title %}
+        <a href="{% url 'questions:delete_question' pk=question.pk %}" 
+          class="btn btn-outline-info float-right text-uppercase text-danger font-weight-bold">
+          Delete</a>
+        {% else %}
+        <a href="{% url 'questions:question_list' %}" 
+          class="btn btn-outline-info float-right text-uppercase text-danger font-weight-bold">
+          Cancel</a>
+        {% endif %}
+      </form>
+      {% endif %}
+
+    </div>
+  </div>
+</div>
+  
+{% endblock content %}
