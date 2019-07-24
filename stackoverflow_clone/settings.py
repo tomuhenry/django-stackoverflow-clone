@@ -39,6 +39,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'accounts.apps.AccountsConfig',
+    'widget_tweaks',
 ]
 
 MIDDLEWARE = [
@@ -73,6 +75,7 @@ WSGI_APPLICATION = 'stackoverflow_clone.wsgi.application'
 
 # Activate Django-Heroku
 django_heroku.settings(locals())
+TEST_RUNNER = 'django_heroku.HerokuDiscoverRunner'
 
 # Database
 # https://docs.djangoproject.com/en/2.2/ref/settings/#databases
