@@ -1,0 +1,30 @@
+{% extends 'layout.html' %}
+{% load widget_tweaks %}
+
+{% block title %}Sign Up | {% endblock %}
+
+{% block content %}
+<div class="col-sm-9 col-md-7 col-lg-6 mx-auto">
+    <div class="card card-signin my-5 border-info flex-row">
+        <div class="card-body">
+        <h2 class="card-title text-center text-info">Sign up</h2>
+  <form method="post" novalidate>
+    {% csrf_token %}
+    {% for field in form.visible_fields %}
+        <div class="form-group">
+        {% if field.errors %}
+            <span class="helptext text-danger" > {{ field.errors }} </span>
+        {% endif %}
+        {{ field.label_tag }}
+        {% render_field field class="form-control" %}
+        </div>
+    {% endfor %}
+    <button type="submit" class="btn btn-lg btn-info btn-block text-uppercase">Sign up</button>
+    <hr class="my-4">
+    <p class="nav">Already a member? <a href="{% url 'login' %}" class="nav-item text-info">Login</a></p>
+  </form>
+</div>
+</div>
+</div>
+
+{% endblock content %}
