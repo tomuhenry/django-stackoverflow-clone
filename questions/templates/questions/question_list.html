@@ -1,0 +1,34 @@
+{% extends "layout.html" %}
+{% load widget_tweaks %}
+
+{% block title %}
+All Questions {{ block.super }}
+{% endblock title %}
+
+{% block content %}
+{{ block.super }}
+
+{%  for question in questions %}
+<br>
+<div class="card my-6 border-info">
+    <div class="card-body">
+        <div>
+            <div class="text-secondary text-right">By: {{ question.author }} 
+                    - {{ question.created_at|date:"j F, Y" }}</div>
+            <a class="text-info card-title responsive-font-size h5" 
+            href="{% url 'questions:question_detail' pk=question.pk%}">
+            {{ question.title }}</a>
+
+        <hr>
+        {% if question.body|wordcount <= 30 %}
+        <p class="card-text">{{ question.body }}</p>
+        {% else %}
+            {{ question.body|truncatewords:30 }}
+            <a href="{% url 'questions:question_detail' pk=question.pk %}" class="card-link">Read More</a>
+        {% endif %}
+    </div>
+    </div>
+</div>
+{% endfor %}
+
+{% endblock content %}
