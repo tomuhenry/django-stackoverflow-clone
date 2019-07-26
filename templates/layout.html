@@ -19,7 +19,65 @@
 </head>
 <body>
     <div class="container">
+    {% if user.is_authenticated %}
+    <nav class="navbar navbar-expand-lg navbar-dark bg-info">
+    <a class="navbar-brand" href="{% url 'questions:question_list' %}">
+            <img src="https://cdn.freebiesupply.com/logos/large/2x/stackoverflow-com-logo-png-transparent.png" 
+            alt="Home" style="width:38px;height:33px;"></a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse justify-content-end" id="navbarNavDropdown">
+        <ul class="navbar-nav">
+        <li class="nav-item active">
+            <a class="nav-link " href="{% url 'questions:question_list' %}">Home </a>
+        </li>
+        <li class="nav-item">
+                <a class="nav-link" href="{% url 'questions:create_question' %}">Ask a Question</a>
+        </li>
+        <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            {{ user.username }}
+            </a>
+            <div class="dropdown-menu bg-info" aria-labelledby="navbarDropdownMenuLink">
+            <a class="dropdown-item" href="#">Profile</a>
+            <a class="dropdown-item" href="{% url 'logout' %}"><span class="fas fa-sign-in-alt"></span> Logout</a>
+            </div>
+        </li>
+        </ul>
+    </div>
+    </nav>
+    {% else %}
+    <nav class="navbar navbar-expand-lg navbar-dark bg-info">
+        <a class="navbar-brand" href="{% url 'questions:question_list' %}">
+            <img src="https://cdn.freebiesupply.com/logos/large/2x/stackoverflow-com-logo-png-transparent.png" 
+            alt="Home" style="width:38px;height:33px;"></a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse justify-content-end" id="navbarNavDropdown">
+            <ul class="nav navbar-nav ml-auto">
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'signup' %}"><span class="fas fa-user"></span> Sign Up</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'login' %}"><span class="fas fa-sign-in-alt"></span> Login</a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+
+    {% endif %}
     <div>
+        {% if messages %}
+            {% for message in messages %}
+            <div data-alert class="alert alert-info alert-dismissible">
+                <button type="button" class="close" data-dismiss="alert">&times;</button>
+               <strong> {{ message }} </strong>
+            </div>
+            {% endfor %}
+        {% endif %}
+
         {% block content %}{% endblock %}
     </div>
     <footer class="footer">
