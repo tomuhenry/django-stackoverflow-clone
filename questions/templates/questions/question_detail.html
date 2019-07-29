@@ -10,27 +10,59 @@
         {{ block.super }}
         <br>
         <article>
-            <h2 class="text-info">{{ question.title }}</h2>
+        <ul class="nav nav-tabs" >
 
+            {% if user.is_authenticated %}
+            <hr>
+            <li class="nav-item">
+                <a class="nav-link active bg-info text-white" href="{% url 'questions:create_question' %}">Ask a Question</a>
+            </li>
+            {% endif %}
+            {% if user != question.author %}
+            <li class="nav-item">
+                <button type="button" class="nav-link active bg-info text-white" data-toggle="modal" data-target="#answer-form">Answer</button>
+                <div class="modal fade" id="answer-form">
+                        {{ block.super }}
+                    <div class="modal-dialog border-info">
+                    <div class="modal-content">
+                        <div class="modal-body">
+                        <form method="post" validate>
+                        {% csrf_token %}
+                        <div class="form-group">
+                            <span class="helptext text-danger"> {{ field.errors }} </span>
+                            <textarea name="answer" rows="20" class="form-control"></textarea>
+                        </div>
+                        <button
+                        type="submit"
+                        class="btn btn-outline-info text-uppercase font-weight-bold"
+                        >
+                        <a class="nav-link active bg-info text-white" href="{% url 'answers:answer' question_pk=question.pk %}">Submit Answer</a>
+                        </button>
+                        </form>
+                        </div>
+                    </div>
+                    </div>
+                </li>
+                {% endif %}
+                {% if user == question.author %}
+                  <li class="nav-item">
+                    <a class="nav-link active bg-info text-white" href="{% url 'questions:edit_question' pk=question.pk %}">Edit Question</a>
+                  </li>
+                {% endif %}
+                </ul>
+                <h2 class="text-info">{{ question.title }}</h2>
+                <p class="text-secondary text-right">By: {{ question.author }} 
+                    - {{ question.created_at|date:"j F, Y" }}</p>
             <div class="callout secondary">
                 {{ question.body|markdown_to_html }}
             </div>
         </article>
-        <ul class="nav nav-tabs" >
-
-          {% if user.is_authenticated %}
-          <hr>
-          <li class="nav-item">
-              <a class="nav-link active bg-info text-white" href="{% url 'questions:create_question' %}">Ask a Question</a>
-            </li>
-          {% endif %}
-          {% if user == question.author %}
-            <li class="nav-item">
-              <a class="nav-link active bg-info text-white" href="{% url 'questions:edit_question' pk=question.pk %}">Edit Question</a>
-            </li>
-        {% endif %}
-
-        </ul>
+        <hr>
+        <h5 class="text-info">Answers</h5>
+        {% for answer in answers %}
+        <div class="text-secondary text-right">By: {{ answer.author }} 
+            - {{ answer.created_at|date:"j F, Y" }}</div>
+            <p>{{ answer.answer|markdown_to_html }}</p>
+        {% endfor %}
     </div>
-  
 {% endblock content %}
