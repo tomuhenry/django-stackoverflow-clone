@@ -10,27 +10,75 @@
         {{ block.super }}
         <br>
         <article>
+          <!-- navigation -->
+          <ul class="nav nav-tabs" >
+            {% if user.is_authenticated %}
+            <hr>
+            <li class="nav-item">
+                <a class="nav-link active bg-info text-white" href="{% url 'questions:create_question' %}">Ask a Question</a>
+            </li>
+            {% endif %}
+            {% if user != question.author %}
+            <li class="nav-item">
+                <!-- <a class="nav-link active bg-info text-white" href="{% url 'answers:answer_question' question_pk=question.pk %}">Answer</a> -->
+                <button type="button" class="nav-link active bg-info text-white" data-toggle="modal" data-target="#answerModal">
+                    Answer
+                </button>
+            </li>
+            {% endif %}
+            {% if user == question.author %}
+              <li class="nav-item">
+                <a class="nav-link active bg-info text-white" href="{% url 'questions:edit_question' pk=question.pk %}">Edit Question</a>
+              </li>
+            {% endif %}
+          </ul>
+
+          <!-- Question -->
             <h2 class="text-info">{{ question.title }}</h2>
 
             <div class="callout secondary">
                 {{ question.body|markdown_to_html }}
             </div>
         </article>
-        <ul class="nav nav-tabs" >
 
-          {% if user.is_authenticated %}
-          <hr>
-          <li class="nav-item">
-              <a class="nav-link active bg-info text-white" href="{% url 'questions:create_question' %}">Ask a Question</a>
-            </li>
-          {% endif %}
-          {% if user == question.author %}
-            <li class="nav-item">
-              <a class="nav-link active bg-info text-white" href="{% url 'questions:edit_question' pk=question.pk %}">Edit Question</a>
-            </li>
-        {% endif %}
+        <!-- Answers -->
+        <h5 class="text-info">Answers</h5>
+        {% for answer in answers %}
+        <div class="text-secondary text-right">By: {{ answer.author }} 
+            - {{ answer.created_at|date:"j F, Y" }}</div>
+            <p>{{ answer.answer|markdown_to_html }}</p>
+        {% endfor %}
 
-        </ul>
+      <div class="modal col-sm-9 col-md-7 col-lg-9 mx-auto" id="answerModal">
+          {{ block.super }}
+          <div class="modal-dialog card card-signin my-5 border-info">
+          <div class="modal-content card-body">
+              <form method="post" validate>
+              {% csrf_token %}
+              <!-- {% for field in form %} -->
+              <div class="form-group">
+                <span class="helptext text-danger"> {{ field.errors }} </span>
+                <!-- {{ field.label_tag }}
+                {% render_field field class="form-control" cols="30" rows="10" %}
+              {% endfor %} -->
+              <textarea class="form-control" cols="35" rows="21"></textarea>
+              </div>
+              <a href="{% url 'questions:question_detail' pk=question.pk %}" 
+                  class="btn btn-outline-info float-right text-uppercase text-info font-weight-bold">
+                  Answer</a>
+              <!-- <button
+              type="submit"
+              class="btn btn-outline-info text-uppercase font-weight-bold"
+              method="POST">
+                  Answer
+              </button> -->
+              <a href="{% url 'questions:question_detail' pk=question.pk %}" 
+                  class="btn btn-outline-info float-right text-uppercase text-danger font-weight-bold">
+                  Cancel</a>
+              </form>
+          </div>
+          </div>
+      </div>
     </div>
   
 {% endblock content %}

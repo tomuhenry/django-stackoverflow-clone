@@ -1,0 +1,26 @@
+<div class="col-sm-9 col-md-7 col-lg-9 mx-auto" id="answerModal">
+    {{ block.super }}
+    <div class="card card-signin my-5 border-info flex-row">
+    <div class="card-body">
+        <form method="post" validate>
+        {% csrf_token %} 
+        {% for field in form %}
+        <div class="form-group">
+            <span class="helptext text-danger"> {{ field.errors }} </span>
+            {{ field.label_tag }}
+            {% render_field field class="form-control"%}
+        {% endfor %}
+        </div>
+        <button
+        type="submit"
+        class="btn btn-outline-info text-uppercase font-weight-bold"
+        method="POST">
+            Answer
+        </button>
+        <a href="{% url 'questions:question_detail' pk=question.pk %}" 
+            class="btn btn-outline-info float-right text-uppercase text-danger font-weight-bold">
+            Cancel</a>
+        </form>
+    </div>
+    </div>
+</div>

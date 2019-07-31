@@ -1,5 +1,6 @@
 {% extends "layout.html" %}
 {% load widget_tweaks %}
+{% load question_extras %}
 
 {% block title %}
 All Questions {{ block.super }}
@@ -15,14 +16,14 @@ All Questions {{ block.super }}
             <div class="text-secondary text-right">By: {{ question.author }} 
                     - {{ question.created_at|date:"j F, Y" }}</div>
             <a class="text-info card-title responsive-font-size h5" 
-            href="{% url 'questions:question_detail' pk=question.pk%}">
+            href="{% url 'questions:question_detail' pk=question.pk %}">
             {{ question.title }}</a>
 
         <hr>
         {% if question.body|wordcount <= 30 %}
-        <p class="card-text">{{ question.body }}</p>
+        <p class="card-text">{{ question.body|markdown_to_html }}</p>
         {% else %}
-            {{ question.body|truncatewords:30 }}
+            {{ question.body|markdown_to_html|truncatewords:30 }}
             <a href="{% url 'questions:question_detail' pk=question.pk %}" class="card-link">Read More</a>
         {% endif %}
     </div>
