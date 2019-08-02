@@ -6,9 +6,6 @@
 {% endblock title %}
 
 {% block content %}
-<!-- {% if perms.app_label.can_do_something %} -->
-
-<!-- {% endif %} -->
 <div class="col-sm-9 col-md-7 col-lg-9 mx-auto">
     {{ block.super }}
   <div class="card card-signin my-5 border-info flex-row">
@@ -16,7 +13,6 @@
       <h2 class="card-title text-center text-info">
           {{ form.instance.title | default:"Make a new question"}}</h2>
 
-      {% if user.is_authenticated %}
       <form method="post" validate>
         {% csrf_token %} 
         {% for field in form %}
@@ -43,8 +39,7 @@
           Cancel</a>
         {% endif %}
       </form>
-      {% endif %}
-
+      
     </div>
   </div>
 </div>

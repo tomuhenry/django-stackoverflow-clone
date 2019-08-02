@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     'accounts.apps.AccountsConfig',
     'widget_tweaks',
     'questions',
+    'answers',
 ]
 
 MIDDLEWARE = [

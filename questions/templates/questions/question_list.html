@@ -25,6 +25,7 @@ All Questions {{ block.super }}
             {{ question.body|truncatewords:30 }}
             <a href="{% url 'questions:question_detail' pk=question.pk %}" class="card-link">Read More</a>
         {% endif %}
+        </div>
     </div>
 </div>
 {% endfor %}

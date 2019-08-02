@@ -1,0 +1,26 @@
+<!-- {% block answer %} -->
+<div class="modal col-sm-9 col-md-7 col-lg-9 mx-auto" id="answer-form">
+    {{ block.super }}
+  <div class="modal-dialog card card-signin my-5 border-info flex-row">
+    <div class="modal-content card-body">
+      <div class="modal-body">
+      <form method="post" validate>
+        {% csrf_token %}
+        <div class="form-group">
+          <span class="helptext text-danger"> {{ field.errors }} </span>
+          <input type="text" class="form-control"%>
+        </div>
+
+        <button
+        type="submit"
+        class="btn btn-outline-info text-uppercase font-weight-bold"
+        method="POST"
+        >
+          Submit Answer
+        </button>
+      </form>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- {% endblock answer %} -->
